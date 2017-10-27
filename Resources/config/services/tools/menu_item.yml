@@ -1,0 +1,118 @@
+parameters:    
+    tm_solution.menu_bundle.tools_menu_item.config: 
+        base:   
+            services:
+                 get:
+                        name: 'tm_solution.menu_bundle.tools_menu_item.model'
+                        method: findOneById            
+        actions:        
+            new:
+                allowed: true
+                templates:
+                    widget: 'Tools\MenuItem\new.html.twig'
+                services:
+                    create:
+                        name: 'tm_solution.menu_bundle.tools_menu_item.model'
+                        method: save
+                form: 
+                   action: new 
+                   form_type: 'TMSolution\MenuBundle\Form\Type\Tools\MenuItem\InsertFormType'
+                
+                redirection: 
+                    route_name: new
+                template_var: 'menuItem'   
+            edit:
+                allowed: true
+                templates:
+                    widget: 'Tools\MenuItem\edit.html.twig' 
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\Type\Tools\MenuItem\EditFormType' 
+                   action: edit
+                services:
+                    update:
+                        name: 'tm_solution.menu_bundle.tools_menu_item.model'
+                        method: update
+                redirection:
+                    route_name: index
+                template_var: 'menuItem'            
+            delete:
+                allowed: true
+                form: 
+                   action: delete
+                services:
+                    delete:
+                        name: 'tm_solution.menu_bundle.tools_menu_item.model'
+                        method: delete
+                redirection:
+                    route_name: index
+                templates:
+                    widget: 'Tools\MenuItem\delete.html.twig'            
+            index:
+                allowed: true
+                templates:
+                    widget: 'Tools\MenuItem\index.html.twig'
+            list:
+                allowed: 
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: 'Tools\MenuItem\list.html.twig' 
+                services:
+                    list:                        
+                        name: 'tm_solution.menu_bundle.tools_menu_item.paginator_model'                        
+                        method: find
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\Type\Tools\MenuItem\FilterFormType'
+                   action: list
+                   method: GET
+                template_var: 'menuItems'                
+                adapter: 'flexix_model.paginator_adapter'    
+            typeahead:
+                allowed: 
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: 'blank.html.twig' 
+                services:
+                    list:
+                        name: 'tm_solution.menu_bundle.tools_menu_item.typeahead'
+                        method: find
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\Type\Tools\MenuItem\FilterFormType'
+                   action: list
+                   method: GET                                  
+            filter:
+                allowed:
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: 'Tools\MenuItem\filter.html.twig' 
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\Type\Tools\MenuItem\FilterFormType'
+                   method: GET
+                   action: index            
+            get:
+                allowed: true
+                templates:
+                    widget: 'Tools\MenuItem\get.html.twig'
+                template_var: 'menuItem'     
+            
+services:
+        tm_solution.menu_bundle.tools_menu_item:
+            class: Flexix\ConfigurationBundle\Util\Configuration
+            arguments: ['%tm_solution.menu_bundle.tools_menu_item.config%']
+            tags:
+                - { name: flexix_prototype_controller.controller_configuration, module: 'tools', alias: 'menu-item' }            
+        tm_solution.menu_bundle.tools_menu_item.model:
+            class: TMSolution\MenuBundle\Model\Tools\MenuItem\Model
+            arguments: ['@doctrine.orm.entity_manager' ]
+        tm_solution.menu_bundle.tools_menu_item.paginator_model:    
+            class: TMSolution\MenuBundle\Model\Tools\MenuItem\PaginatorModel
+            arguments: ['@flexix_model.model','@flexix_model.filter','@flexix_model.paginator' ]            
+        tm_solution.menu_bundle.tools_menu_item.typeahead:
+            class: TMSolution\MenuBundle\Model\Tools\MenuItem\Typeahead
+            arguments: ['@tm_solution.menu_bundle.tools_menu_item.model','@flexix_model.filter',10,{'name': 'p.name','route': 'p.route'}]    
+    
+            
+            
+           

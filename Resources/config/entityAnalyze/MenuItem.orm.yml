@@ -1,0 +1,159 @@
+TMSolution\MenuBundle\Entity\MenuItem:
+    type: entity
+    table: menu_item
+    indexes:
+        IDX_D754D55079066886:
+            columns:
+                - root_id
+        IDX_D754D550727ACA70:
+            columns:
+                - parent_id
+    properties:
+        name:
+            section: fields
+            setter: setName
+            getter: getName
+        route:
+            section: fields
+            setter: setRoute
+            getter: getRoute
+        routeParameters:
+            section: fields
+            setter: setRouteParameters
+            getter: getRouteParameters
+        lft:
+            section: fields
+            setter: setLft
+            getter: getLft
+        lvl:
+            section: fields
+            setter: setLvl
+            getter: getLvl
+        rgt:
+            section: fields
+            setter: setRgt
+            getter: getRgt
+        position:
+            section: fields
+            setter: setPosition
+            getter: getPosition
+        parent:
+            section: manyToOne
+            setter: setParent
+            getter: getParent
+        root:
+            section: manyToOne
+            setter: setRoot
+            getter: getRoot
+    visuals:
+        filter:
+            - name
+            - route
+            - routeParameters
+            - position
+            - parent
+            - root
+        list:
+            - name
+            - route
+            - routeParameters
+            - position
+            - parent
+            - root
+        get:
+            - name
+            - route
+            - routeParameters
+            - position
+            - parent
+            - root
+        insert:
+            - name
+            - route
+            - routeParameters
+            - position
+            - parent
+            - root
+        edit:
+            - name
+            - route
+            - routeParameters
+            - position
+            - parent
+            - root
+        typeahead:
+            - name
+            - route
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        route:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        routeParameters:
+            type: json_array
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: route_parameters
+        lft:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+        lvl:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+        rgt:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+        position:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+    manyToOne:
+        parent:
+            targetEntity: MenuItem
+            cascade: {  }
+            type: entity
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                parent_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        root:
+            targetEntity: MenuItem
+            cascade: {  }
+            type: entity
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                root_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,124 @@
+parameters:    
+    $aliasPath.config: 
+        base:
+            services:
+                 get:
+                        name: '$aliasPath.model'
+                        method: findOneById
+        actions:
+            
+            index:
+                allowed: true
+                templates:
+                    widget: '$aliasPath\index.html.twig'
+            new:
+                allowed: true
+                templates:
+                    widget: '$aliasPath\new.html.twig'
+                services:
+                    create:
+                        name: '$aliasPath.model'
+                        method: save
+                form: 
+                   action: new 
+                   form_type: '$formTypePath'
+                
+                redirection: 
+                    route_name: index                                     
+            list:
+                allowed: 
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: '$aliasPath\list.html.twig' 
+                services:
+                    list:
+                        name: '$aliasPath.list_model'
+                        method: find
+                form: 
+                   form_type: '$searchFormTypePath'
+                   action: list
+                   method: GET
+                adapter: '$paginatorAdapter'
+                    
+            typeahead:
+                allowed: 
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: 'blank.html.twig' 
+                services:
+                    list:
+                        name: '$aliasPath.typeahead'
+                        method: find
+     
+                form: 
+                   form_type: '$searchFormTypePath'
+                   action: list
+                   method: GET                                  
+            filter:
+                allowed:
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: '$aliasPath\filter.html.twig' 
+                form: 
+                   form_type: '$searchFormTypePath'
+                   method: GET
+                   action: index   
+            get:
+                allowed: true
+                templates:
+                    widget: '$aliasPath\show.html.twig'
+                template_var: menuItem    
+            edit:
+                allowed: true
+                templates:
+                    widget: '$aliasPath\edit.html.twig' 
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\MenuItemType' 
+                   action: edit
+                services:
+                    update:
+                        name: '$aliasPath.model'
+                        method: update
+                redirection:
+                    route_name: index       
+            delete:
+                allowed: true
+                services:
+                    delete:
+                        name: '$aliasPath.model'
+                        method: delete
+                redirection:
+                    route_name: filter
+services:
+        $aliasPath:
+            class: Flexix\ConfigurationBundle\Util\Configuration
+            arguments: [%$aliasPath.config%]
+            tags:
+                - { name: flexix_prototype_controller.controller_configuration, module: 'menu', alias: 'menu-item' }    
+        $aliasPath.model:
+            class: TMSolution\ModelBundle\Util\Model
+            arguments: ['@doctrine.orm.entity_manager']          
+            
+        $aliasPath.paginator:    
+            class: TMSolution\ModelBundle\Model\Paginator
+            arguments: ['@knp_paginator',10 ]    
+       
+        $aliasPath.filter:
+            class: TMSolution\ModelBundle\Model\Filter
+            arguments: ['@lexik_form_filter.query_builder_updater']
+        
+        $aliasPath.paginator_adapter:
+            class: TMSolution\ModelBundle\Model\PaginatorAdapter
+            
+        $aliasPath.list_model:
+            class: TMSolution\ModelBundle\Model\Model
+            arguments: ['@$aliasPath.model','@$aliasPath.filter','@$aliasPath.paginator' ]    
+            
+        $aliasPath.typeahead:
+            class: TMSolution\ModelBundle\Model\Typeahead
+            arguments: ['@$aliasPath.model','@$aliasPath.filter',10,{ 'name': 'p.name' }]    
+           
+       

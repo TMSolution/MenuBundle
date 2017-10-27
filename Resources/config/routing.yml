@@ -1,0 +1,3 @@
+tm_solution_menu_homepage:
+    path:     /
+    defaults: { _controller: TMSolutionMenuBundle:Default:index }

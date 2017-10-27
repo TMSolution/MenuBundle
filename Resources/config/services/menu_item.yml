@@ -1,0 +1,123 @@
+parameters:    
+    tm_solution_menu_menu_item.config: 
+        base:
+            allowed: true
+            services:
+                 get:
+                        name: 'tm_solution_menu.model'
+                        method: findOneById
+        actions:
+            
+            index:
+                templates:
+                    widget: 'menuitem\index.html.twig'
+            new:
+                templates:
+                    widget: 'menuitem\new.html.twig'
+                services:
+                    create:
+                        name: 'tm_solution_menu.model'
+                        method: save
+                form: 
+                   action: new 
+                   form_type: 'TMSolution\MenuBundle\Form\MenuItemType'
+                
+                redirection: 
+                    route_name: new                                     
+            list:
+                allowed: 
+                    - xhttp
+                    - subrequest
+                templates:
+                    widget: 'menuitem\list.html.twig' 
+                services:
+                    list:
+                        name: 'flexix.pagination_model'
+                        method: find
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\SearchMenuItemType'
+                   action: list
+                   method: GET
+                adapter: 'flexix.paginator_adapter'
+                    
+            typeahead:
+                allowed: 
+                    - xhttp
+                templates:
+                    widget: 'blank.html.twig' 
+                services:
+                    list:
+                        name: 'tm_solution_menu.typeahead'
+                        method: find
+     
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\SearchMenuItemType'
+                   action: list
+                   method: GET                                  
+            filter:
+                templates:
+                    widget: 'menuitem\filter.html.twig' 
+     
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\SearchMenuItemType'
+                   method: GET
+                   action: index   
+            get:
+                allowed: true
+                templates:
+                    widget: 'menuitem\show.html.twig'
+                template_var: menuItem    
+            edit:
+                templates:
+                    widget: 'menuitem\edit.html.twig' 
+                form: 
+                   form_type: 'TMSolution\MenuBundle\Form\MenuItemType' 
+                   action: edit
+                services:
+                    update:
+                        name: 'tm_solution_menu.model'
+                        method: update
+                        result_parameter: menuItem
+                redirection:
+                    route_name: index       
+            delete:
+                services:
+                    delete:
+                        name: 'tm_solution_menu.model'
+                        method: delete
+                redirection:
+                    route_name: filter
+   
+   
+services:
+        tm_solution_menu.menu_item:
+            class: Flexix\ConfigurationBundle\Util\Configuration
+            arguments: ['%tm_solution_menu_menu_item.config%']
+            tags:
+                - { name: flexix_prototype_controller.controller_configuration, module: 'menu', alias: 'menu-item' }
+        
+        tm_solution_menu.model:
+            class: TMSolution\ModelBundle\Util\Model
+            arguments: ['@doctrine.orm.entity_manager']
+            
+            
+        tm_solution_menu.paginator:    
+            class: TMSolution\MenuBundle\Model\Paginator
+            arguments: ['@knp_paginator',10 ]    
+       
+        tm_solution_menu.filter:
+            class: TMSolution\MenuBundle\Model\Filter
+            arguments: ['@lexik_form_filter.query_builder_updater']
+        
+        tm_solution_menu.paginator_adapter:
+            class: TMSolution\MenuBundle\Model\PaginatorAdapter
+            
+        tm_solution_menu.list_model:
+            class: TMSolution\MenuBundle\Model\Model
+            arguments: ['@tm_solution_menu.model','@tm_solution_menu.filter','@tm_solution_menu.paginator' ]    
+            
+        tm_solution_menu.typeahead:
+            class: TMSolution\MenuBundle\Model\Typeahead
+            arguments: ['@tm_solution_menu.model','@tm_solution_menu.filter',10,{ 'name': 'p.name' }]    
+           
+       

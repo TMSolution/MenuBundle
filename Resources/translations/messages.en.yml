@@ -1,0 +1,16 @@
+tools:
+    menu_item:
+        name: name
+        route: route
+        route_parameters: route_parameters
+        lft: lft
+        lvl: lvl
+        rgt: rgt
+        position: position
+        parent: parent
+        root: root
+        _filter: Filter
+        _list: List
+        _get: View
+        _edit: Edit
+        _new: New

@@ -1,0 +1,51 @@
+menu:
+    system:
+            dashboard: Pulpit
+            client: Klienci
+            contact: Kontakty
+            calendar: Kalendarz
+            car: Flota
+            client_case: Sprawy
+            client_order: Zlecenia
+            contact_book_item: 'Książka adresowa'
+            document: Dokumenty
+            product: Produkty
+            equipment_item: Wyposażenie
+            document_template: Szablony dokumentów
+            equipment: 'Wyposażenie'
+            user_management:
+                menu: Zarządzanie użytkownikami
+                user: Użytkownicy
+                group: Grupy
+            dictionary:
+                menu: Słowiniki
+                calendar_type: Typy kalendarzy
+                campaign_type: Typy kampanii
+                client_type: Typy klientów
+                contact_book_item_type: Typy elementów książki adresowej
+                contact_book_type: Typy książek adresowych
+                contact_direction: Kierunki kontaktów
+                contact_status: Statusy kontaktów
+                contact_type: Typy kontaktów
+                document_template_item_type: Typy elementów szablonów
+                document_type: Typy dokumentów
+                medium_type: Typy mediów
+                product_model: Modele Produktów
+                product_type: Typy Produktów
+            log: Logi systmemowe
+tools:
+    menu_item:
+        name: name
+        route: route
+        route_parameters: route_parameters
+        lft: lft
+        lvl: lvl
+        rgt: rgt
+        position: position
+        parent: parent
+        root: root
+        _filter: Filter
+        _list: List
+        _get: View
+        _edit: Edit
+        _new: New
