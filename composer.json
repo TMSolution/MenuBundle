@@ -2,7 +2,7 @@
     "name": "tmsolution/menu-bundle",
     "type": "symfony-bundle",
     "description": "Symfony3 bundle for application menu",
-    "keywords": ["menu", "oktawaveapi"],
+    "keywords": ["menu", "bundle"],
     "homepage": "https://github.com/TMSolution/MenuBundle",
     "license": "MIT",
     "authors": [
